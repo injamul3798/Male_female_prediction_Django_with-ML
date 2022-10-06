@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <div class="container pt-5">
+        <div class="row">
+
+        <h1>Prediction Results</h1>
+
+            <table class="table">
+                <thead>
+                <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Long hair</th>
+                <th scope="col">Forehead width_cm</th>
+                <th scope="col">Forehead height_cm</th>
+                <th scope="col">Nose_wide</th>
+                <th scope="col">Nose_long</th>
+                <th scope="col">Lips_thin</th>
+                <th scope="col">Distance_nose_to_lip_long</th>
+                <th scope="col">Gender</th>
+                </tr>
+                </thead>
+                <tbody>
+                    
+                {% for data in dataset %}
+                    <tr>
+                    <th scope="row">{{ data.id }}</th>
+                    <td>{{ data.long_hair }}</td>
+                    <td>{{ data.forehead_width_cm }}</td>
+                    <td>{{ data.forehead_height_cm }}</td>
+                    <td>{{ data.nose_wide }}</td>
+                    <td>{{ data.nose_long }}</td>
+                    <td>{{ data.lips_thin }}</td>
+                    <td>{{ data.distance_nose_to_lip_long }}</td>
+                    <td>{{ data.gender }}</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+ 

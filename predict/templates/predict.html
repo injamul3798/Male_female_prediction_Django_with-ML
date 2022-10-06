@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<!-- Modal -->
+<!--Here we will result with output-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Prediction Results</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Prediction Input:</h5>
+                <div>Long hair: <span id="sl"></span></div>
+                <div>Forehead width_cm: <span id="sw"></span></div>
+                <div>Forehead height_cm: <span id="pl"></span></div>
+                <div>Nose wide: <span id="pw"></span></div>
+                <div>Nose long: <span id="sk"></span></div>
+                <div>Lips thin: <span id="so"></span></div>
+                <div>Distance_nose_to_lip_long: <span id="pk"></span></div>
+
+                <h5 class="pt-3">Prediction Result:</h5>
+                <div id="prediction"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a class="btn btn-primary" href="/results" role="button">View DB</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container pt-5">
+    <div class="row justify-content-md-center">
+        <div class="col-md-4">
+            <h3>Male-Female Prediction</h3>
+            <form action="" id="post-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="sepal_length">long_hair</label>
+                    <input type="number" step="0.1" class="form-control" id="long_hair" placeholder="" required>
+                </div>
+                <div class="form-group">
+                    <label for="Sepal Width">forehead_width_cm</label>
+                    <input type="number" step="0.1" class="form-control" id="forehead_width_cm" placeholder="" required>
+                </div>
+                <div class="form-group">
+                    <label for="petal_length">forehead_height_cm</label>
+                    <input type="number" step="0.1" class="form-control" id="forehead_height_cm" placeholder="" required>
+                </div>
+                <div class="form-group">
+                    <label for="petal_width">nose_wide</label>
+                    <input type="number" step="0.1" class="form-control" id="nose_wide" placeholder="" required>
+                </div>
+                <div class="form-group">
+                    <label for="petal_width">nose_long</label>
+                    <input type="number" step="0.1" class="form-control" id="nose_long" placeholder="" required>
+                </div>
+                <div class="form-group">
+                    <label for="petal_width">lips_thin</label>
+                    <input type="number" step="0.1" class="form-control" id="lips_thin" placeholder="" required>
+                </div>
+                <div class="form-group">
+                    <label for="petal_width">distance_nose_to_lip_long</label>
+                    <input type="number" step="0.1" class="form-control" id="distance_nose_to_lip_long" placeholder="" required>
+                </div>
+                <button type="submit" value="Submit" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).on('submit', '#post-form',function(e){
+        e.preventDefault();
+        $.ajax({
+            type:'POST',
+            url:'{% url "predict:submit_prediction" %}',
+            data:{
+                long_hair:$('#long_hair').val(),
+                forehead_width_cm:$('#forehead_width_cm').val(),
+                forehead_height_cm:$('#forehead_height_cm').val(),
+                nose_wide:$('#nose_wide').val(),
+                nose_long:$('#nose_long').val(),
+                lips_thin:$('#lips_thin').val(),
+                distance_nose_to_lip_long:$('#distance_nose_to_lip_long').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            success:function(json) {
+                document.forms["post-form"].reset();
+                document.getElementById("prediction").innerHTML = json['result']
+                document.getElementById("sl").innerHTML = json['long_hair']
+                document.getElementById("sw").innerHTML = json['forehead_width_cm']
+                document.getElementById("pl").innerHTML = json['forehead_height_cm']
+                document.getElementById("pw").innerHTML = json['nose_wide']
+                document.getElementById("sk").innerHTML = json['nose_long']
+                document.getElementById("so").innerHTML = json['lips_thin']
+                document.getElementById("pk").innerHTML = json['distance_nose_to_lip_long']
+            },
+            error : function(xhr,errmsg,err) {
+
+            }
+        });
+    })
+</script>
+
+{% endblock %}

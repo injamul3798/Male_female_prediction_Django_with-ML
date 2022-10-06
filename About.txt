@@ -1,0 +1,13 @@
+This project is about Male-female prediction using Machine Learing.I created a website using django and determine whether person is Male or Female.
+
+
+
+
+Devloped by..
+------------------------------------------------
+Md. Injamul Haque
+BSc in Computer Science Engineering (3rd year)
+Daffodil International University,Dhaka,Bangladesh
+
+
+Interest in Artifical Intelligence(AI)
